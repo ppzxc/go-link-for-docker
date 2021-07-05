@@ -1,5 +1,10 @@
 # go-link
+
 ## chat server
+1. websocket connection url
+```
+ws://localhost:8081/api/v1/ws
+```
 
 ## up usage
 

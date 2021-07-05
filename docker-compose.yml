@@ -10,7 +10,7 @@ services:
       - ./go-link/static:/app/static
       - ./go-link/uploads:/app/uploads
     ports:
-      - 80:8080
+      - 8081:8080
     networks:
       - link
   mariadb:
