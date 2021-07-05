@@ -1,0 +1,48 @@
+{
+  "database": {
+    "host": "mariadb",
+    "port": 3306,
+    "username": "root",
+    "password": "test",
+    "database": "link",
+    "option": "timeout=5s&parseTime=true&loc=Local",
+    "storage_path": "c:\\test",
+    "table_reset_on_start": true,
+    "table_create_on_start": true,
+    "user_create_on_start": true
+  },
+  "app": {
+    "upload_file_path": "/app/uploads",
+    "rotary": false,
+    "web": {
+      "port": "0.0.0.0:8080"
+    },
+    "module": {
+      "chat": {
+        "count": 3
+      },
+      "router": {
+        "count": 3
+      },
+      "emitter": {
+        "count": 3
+      },
+      "meta": {
+        "count": 3
+      },
+      "auth": {
+        "count": 3
+      },
+      "hub": {
+        "count": 3
+      }
+    },
+    "jwt": {
+      "secret": "testsecrettest"
+    },
+    "queue": {
+      "ticker": 10,
+      "size": 2048
+    }
+  }
+}

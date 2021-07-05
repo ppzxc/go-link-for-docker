@@ -1,0 +1,37 @@
+version: "3.8"
+
+services:
+  link:
+    image: ppzxc8487/go-link:v0.0.1
+    restart: always
+    container_name: link
+    volumes:
+      - ./go-link/config.json:/app/config.json
+      - ./go-link/static:/app/static
+      - ./go-link/uploads:/app/uploads
+    ports:
+      - 80:8080
+    networks:
+      - link
+  mariadb:
+    image: mariadb:10.3
+    restart: always
+    container_name: mariadb
+    ports:
+      - 3306:3306
+    environment:
+      - MYSQL_DATABASE=test
+      - MYSQL_USER=test
+      - MYSQL_PASSWORD=test
+      - MYSQL_ROOT_PASSWORD=test
+      - TZ=Asia/Seoul
+    volumes:
+      - ./mariadb/my.cnf:/root/.my.cnf:ro
+      - ./mariadb/conf.d:/etc/mysql/conf.d:ro
+      - ./mariadb/1.sql:/docker-entrypoint-initdb.d/1.sql:ro
+    networks:
+      - link
+      
+networks:
+  link:
+    external: true
