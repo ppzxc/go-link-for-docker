@@ -9,7 +9,7 @@
     "storage_path": "c:\\test",
     "table_reset_on_start": true,
     "table_create_on_start": true,
-    "user_create_on_start": true
+    "user_create_on_start": false
   },
   "app": {
     "upload_file_path": "/app/uploads",
