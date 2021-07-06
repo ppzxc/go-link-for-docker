@@ -9,7 +9,9 @@
     "storage_path": "c:\\test",
     "table_reset_on_start": true,
     "table_create_on_start": true,
-    "user_create_on_start": false
+    "user_create_on_start": false,
+    "max_idle_connections": 20,
+    "max_open_connections": 40
   },
   "app": {
     "upload_file_path": "/app/uploads",
