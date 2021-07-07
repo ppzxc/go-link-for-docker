@@ -1,0 +1,37 @@
+.container-fluid {
+    height: 100%;
+    overflow-y: hidden;
+}
+
+.header-row {
+    border: 1px black solid;
+    margin: 1px;
+    height: 64px;
+}
+
+.body-row {
+    border: 1px black solid;
+    margin: 1px;
+    height: 700px;
+}
+
+.log-row {
+    border: 1px black solid;
+    margin: 1px;
+    height: 200px;
+}
+
+.header-root {
+    /*border: 1px black solid;*/
+    /*height: 64px;*/
+}
+
+.header-content {
+    border: 1px black solid;
+    margin: 2px;
+}
+
+.body-content {
+    border: 1px black solid;
+    margin: 2px;
+}
