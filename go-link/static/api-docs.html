@@ -26,12 +26,26 @@
     </div>
     <div class="row body-row">
         <div class="col body-content">
+            <div><button id="buttonTestLogin" style="width: 100%; text-align: left">AUTO : 테스트 계정 로그인</button></div>
             <div><button id="buttonRegister" style="width: 100%; text-align: left">AUTH : 회원가입</button></div>
             <div><button id="buttonLogout" style="width: 100%; text-align: left">AUTH : 로그아웃</button></div>
             <div><button id="buttonIdPassword" style="width: 100%; text-align: left">AUTH : 로그인 Id Password</button></div>
             <div><button id="buttonAnonymous" style="width: 100%; text-align: left">AUTH : 로그인 Anonymous</button></div>
             <div><button id="buttonToken" style="width: 100%; text-align: left">AUTH : 로그인 token</button></div>
+            <div><button id="buttonRequestToken" style="width: 100%; text-align: left">AUTH : 현재 세션의 token 요청</button></div>
             <div><button id="buttonRotary" style="width: 100%; text-align: left">AUTH : 로그인 Rotary</button></div>
+            <div><button id="buttonCreateRoom" style="width: 100%; text-align: left">CTRL : 채팅방 생성</button></div>
+            <div><button id="buttonJoinRoom" style="width: 100%; text-align: left">CTRL : 채팅방 입장</button></div>
+            <div><button id="buttonLeaveRoom" style="width: 100%; text-align: left">CTRL : 채팅방 나가기</button></div>
+            <div><button id="buttonInviteRoom" style="width: 100%; text-align: left">CTRL : 채팅방 초대하기</button></div>
+            <div><button id="buttonMetaAllChatRoom" style="width: 100%; text-align: left">META : 모든 채팅방 요청</button></div>
+            <div><button id="buttonMetaMyChatRoom" style="width: 100%; text-align: left">META : 내 채팅방 요청</button></div>
+            <div><button id="buttonMetaAllUser" style="width: 100%; text-align: left">META : 모든 사용자 요청</button></div>
+            <div><button id="buttonMetaChatRoomUser" style="width: 100%; text-align: left">META : 특정 채팅방 내 사용자 요청</button></div>
+            <div><button id="buttonMetaChatRoomMessage" style="width: 100%; text-align: left">META : 특정 채팅방 내 메시지</button></div>
+            <div><button id="buttonMsgSend" style="width: 100%; text-align: left">MSG : 메시지 전송</button></div>
+            <div><button id="buttonMsgReceiveAck" style="width: 100%; text-align: left">MSG : 수신 응답</button></div>
+            <div><button id="buttonMsgReadAck" style="width: 100%; text-align: left">MSG : 읽음 응답</button></div>
         </div>
         <div class="col body-content">
             <textarea id="inputJson" name="textarea" style="width: 100%; height: 90%"></textarea>
@@ -41,12 +55,12 @@
             <textarea id="receiveJson" name="textarea" style="width: 100%; height: 100%"></textarea>
         </div>
     </div>
-    <div class="row log-row">
-        <div class="col" id="logDiv" style="overflow: scroll">
-            <ul id="logList">
+    <div id="logDiv" style="border: 1px black solid; margin: 1px; height: 200px; overflow: scroll">
+        <ul id="logList">
+<!--            <ul id="logList">-->
 
-            </ul>
-        </div>
+<!--            </ul>-->
+        </ul>
     </div>
 </div>
 
