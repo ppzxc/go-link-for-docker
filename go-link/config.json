@@ -34,7 +34,10 @@
 	  "goroutine": {
         "type": "default"
       },
-      "chat": {
+	  "ctrl": {
+        "count": 100
+      },
+      "msg": {
         "count": 100
       },
       "router": {
