@@ -2,7 +2,7 @@ version: "3.8"
 
 services:
   link:
-    image: ppzxc8487/go-link:v0.0.4
+    image: ppzxc8487/go-link:v0.0.6
     restart: always
     container_name: link
     volumes:

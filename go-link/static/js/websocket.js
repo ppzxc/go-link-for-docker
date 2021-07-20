@@ -52,7 +52,8 @@ buttonMsgSend.onclick = function () {
     let root = defaultJsonObject("msg")
     root.msg.request.what = "message"
     root.msg.request.how = "send"
-    root.msg.request.topic_id = 0
+    root.msg.request.topic = {}
+    root.msg.request.topic.id = 0
     root.msg.request.message = ""
 
     inputJson.value = JSON.stringify(root, null, 4)
@@ -62,7 +63,8 @@ buttonMsgReadAck.onclick = function () {
     let root = defaultJsonObject("msg")
     root.msg.request.what = "message"
     root.msg.request.how = "read"
-    root.msg.request.topic_id = 0
+    root.msg.request.topic = {}
+    root.msg.request.topic.id = 0
     root.msg.request.sequence_id = 0
 
     inputJson.value = JSON.stringify(root, null, 4)
@@ -72,7 +74,8 @@ buttonMsgReceiveAck.onclick = function () {
     let root = defaultJsonObject("msg")
     root.msg.request.what = "message"
     root.msg.request.how = "ack"
-    root.msg.request.topic_id = 0
+    root.msg.request.topic = {}
+    root.msg.request.topic.id = 0
     root.msg.request.sequence_id = 0
 
     inputJson.value = JSON.stringify(root, null, 4)
@@ -108,7 +111,8 @@ buttonMetaChatRoomUser.onclick = function () {
     root.meta.request.what = "user"
     root.meta.request.how = "select"
     root.meta.request.using = "topic"
-    root.meta.request.topic_id = 0
+    root.meta.request.topic = {}
+    root.meta.request.topic.id = 0
 
     inputJson.value = JSON.stringify(root, null, 4)
 }
@@ -117,7 +121,8 @@ buttonMetaChatRoomMessage.onclick = function () {
     let root = defaultJsonObject("meta")
     root.meta.request.what = "message"
     root.meta.request.how = "select"
-    root.meta.request.topic_id = 0
+    root.meta.request.topic = {}
+    root.meta.request.topic.id = 0
 
     inputJson.value = JSON.stringify(root, null, 4)
 }
@@ -128,7 +133,8 @@ buttonCreateRoom.onclick = function () {
     root.ctrl.request.how = "create"
     root.ctrl.request.who = "alone"
     root.ctrl.request.private = false
-    root.ctrl.request.topic_name = ""
+    root.ctrl.request.topic = {}
+    root.ctrl.request.topic.name = ""
 
     inputJson.value = JSON.stringify(root, null, 4)
 }
@@ -137,7 +143,8 @@ buttonJoinRoom.onclick = function () {
     let root = defaultJsonObject("ctrl")
     root.ctrl.request.what = "topic"
     root.ctrl.request.how = "join"
-    root.ctrl.request.topic_id = 0
+    root.ctrl.request.topic = {}
+    root.ctrl.request.topic.id = 0
 
     inputJson.value = JSON.stringify(root, null, 4)
 }
@@ -146,7 +153,8 @@ buttonLeaveRoom.onclick = function () {
     let root = defaultJsonObject("ctrl")
     root.ctrl.request.what = "topic"
     root.ctrl.request.how = "leave"
-    root.ctrl.request.topic_id = 0
+    root.ctrl.request.topic = {}
+    root.ctrl.request.topic.id = 0
 
     inputJson.value = JSON.stringify(root, null, 4)
 }
@@ -155,8 +163,10 @@ buttonInviteRoom.onclick = function () {
     let root = defaultJsonObject("ctrl")
     root.ctrl.request.what = "topic"
     root.ctrl.request.how = "invite"
-    root.ctrl.request.user_id = 0
-    root.ctrl.request.topic_id = 0
+    root.ctrl.request.user = {}
+    root.ctrl.request.user.id = 0
+    root.ctrl.request.topic = {}
+    root.ctrl.request.topic.id = 0
 
     inputJson.value = JSON.stringify(root, null, 4)
 }
@@ -214,14 +224,15 @@ buttonRotary.onclick = function () {
     root.auth.request.what = "session"
     root.auth.request.how = "login"
     root.auth.request.using = "rotary"
-    root.auth.request.user_id = 0
+    root.auth.request.user = {}
+    root.auth.request.user.id = 0
 
     inputJson.value = JSON.stringify(root, null, 4)
 }
 
 buttonRequestToken.onclick = function () {
     let root = defaultJsonObject("auth")
-    root.auth.request.what = "jwt"
+    root.auth.request.what = "token"
     root.auth.request.how = "select"
 
     inputJson.value = JSON.stringify(root, null, 4)
@@ -231,8 +242,8 @@ buttonToken.onclick = function () {
     let root = defaultJsonObject("auth")
     root.auth.request.what = "session"
     root.auth.request.how = "login"
-    root.auth.request.using = "key"
-    root.auth.request.jwt_token = ""
+    root.auth.request.using = "token"
+    root.auth.request.token = ""
 
     inputJson.value = JSON.stringify(root, null, 4)
 }
@@ -288,7 +299,7 @@ function parseWebsocketReadMessage(msg) {
             recvAck.msg.request = {}
             recvAck.msg.request.what = "message"
             recvAck.msg.request.how = "ack"
-            recvAck.msg.request.topic_id = recv.msg.request.topic_id
+            recvAck.msg.request.topic.id = recv.msg.request.topic.id
             recvAck.msg.request.sequence_id = recv.msg.response.message.sequence_id
             let recvAckJson = JSON.stringify(recvAck)
             Log("SEND " + recvAckJson)
@@ -300,7 +311,7 @@ function parseWebsocketReadMessage(msg) {
             readAck.msg.request = {}
             readAck.msg.request.what = "message"
             readAck.msg.request.how = "read"
-            readAck.msg.request.topic_id = recv.msg.request.topic_id
+            readAck.msg.request.topic.id = recv.msg.request.topic.id
             readAck.msg.request.sequence_id = recv.msg.response.message.sequence_id
             let readAckJson = JSON.stringify(readAck)
             Log("SEND " + readAckJson)

@@ -15,12 +15,18 @@
     "use_prom": true
     "max_idle_connections": 20,
     "max_open_connections": 40,
-	"cache_size": 8192
+    "cache_size": 8192,
+    "use_cache": true,
+    "use_sql_log": true,
+    "use_prom": true
   },
   "app": {
     "upload_file_path": "/app/uploads",
     "web": {
       "port": "0.0.0.0:8080"
+    },
+	"pprof": {
+      "use_profile": true
     },
     "module": {
 	  "ticker_time": "60s",
@@ -28,22 +34,22 @@
         "type": "default"
       },
       "chat": {
-        "count": 3
+        "count": 100
       },
       "router": {
-        "count": 3
+        "count": 100
       },
       "emitter": {
-        "count": 3
+        "count": 100
       },
       "meta": {
-        "count": 3
+        "count": 100
       },
       "auth": {
-        "count": 3
+        "count": 100
       },
       "hub": {
-        "count": 3
+        "count": 100
       }
     },
     "jwt": {
@@ -52,7 +58,7 @@
     "queue": {
 	  "type": "channel",
       "ticker": 10,
-      "size": 2048
+      "size": 8192
     }
   }
 }
