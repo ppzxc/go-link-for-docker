@@ -1,5 +1,6 @@
 {
   "database": {
+	"type": "mariadb",
     "host": "mariadb",
     "port": 3306,
     "username": "root",
