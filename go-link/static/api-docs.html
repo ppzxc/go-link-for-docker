@@ -25,7 +25,7 @@
         </div>
     </div>
     <div class="row body-row">
-        <div class="col body-content">
+        <div class="col body-content" style="width: 100%; height: 690px; overflow: scroll">
             <div><button id="buttonTestLogin" style="width: 100%; text-align: left">AUTO : 테스트 계정 로그인</button></div>
             <div><button id="buttonRegister" style="width: 100%; text-align: left">AUTH : 회원가입</button></div>
             <div><button id="buttonLogout" style="width: 100%; text-align: left">AUTH : 로그아웃</button></div>
@@ -43,9 +43,30 @@
             <div><button id="buttonMetaAllUser" style="width: 100%; text-align: left">META : 모든 사용자 요청</button></div>
             <div><button id="buttonMetaChatRoomUser" style="width: 100%; text-align: left">META : 특정 채팅방 내 사용자 요청</button></div>
             <div><button id="buttonMetaChatRoomMessage" style="width: 100%; text-align: left">META : 특정 채팅방 내 메시지</button></div>
+            <div><button id="buttonMetaUserProfile" style="width: 100%; text-align: left">META : 사용자 프로필 수정</button></div>
+            <div>
+                <input type="file" id="profileImageUploadFile" name="file"/>
+                <input type="text" id="profileImageUploadUserId" placeholder="user_id" name="user_id"/>
+                <input type="text" id="profileImageUploadToken" placeholder="token" name="token"/>
+                <button id="buttonProfileImageUpload">사용자 프로필 이미지 업로드</button>
+            </div>
             <div><button id="buttonMsgSend" style="width: 100%; text-align: left">MSG : 메시지 전송</button></div>
+            <div><button id="buttonMsgSendFile" style="width: 100%; text-align: left">MSG : 파일 전송</button></div>
             <div><button id="buttonMsgReceiveAck" style="width: 100%; text-align: left">MSG : 수신 응답</button></div>
             <div><button id="buttonMsgReadAck" style="width: 100%; text-align: left">MSG : 읽음 응답</button></div>
+            <div>
+                <input type="file" id="fileImageUploadFile" name="file"/>
+                <input type="text" id="fileImageUploadTopicId" placeholder="topic_id" name="topic_id"/>
+                <input type="text" id="fileImageUploadToken" placeholder="token" name="token"/>
+                <button id="fileImageUpload">채팅방에 파일 업로드</button>
+            </div>
+            <hr>
+            <div>
+                <input type="text" id="fileDownloadFileId" placeholder="file_id" name="file_id"/>
+                <input type="text" id="fileDownloadToken" placeholder="token" name="token"/>
+                <button id="fileDownload">파일 다운로드</button>
+                <button id="profileDownload">프로필 사진 다운로드</button>
+            </div>
         </div>
         <div class="col body-content">
             <textarea id="inputJson" name="textarea" style="width: 100%; height: 90%"></textarea>
@@ -65,8 +86,6 @@
 </div>
 
 <script type="text/javascript" src="/js/websocket.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
-        crossorigin="anonymous"></script>
+<script type="text/javascript" src="/js/jquery-3.6.0.min.js"></script>
 </body>
 </html>

@@ -26,6 +26,22 @@ let buttonMetaMyChatRoom = document.getElementById("buttonMetaMyChatRoom");
 let buttonMetaAllUser = document.getElementById("buttonMetaAllUser");
 let buttonMetaChatRoomUser = document.getElementById("buttonMetaChatRoomUser");
 let buttonMetaChatRoomMessage = document.getElementById("buttonMetaChatRoomMessage");
+let buttonMetaUserProfile = document.getElementById("buttonMetaUserProfile");
+
+let profileImageUploadFile = document.getElementById("profileImageUploadFile");
+let profileImageUploadUserId = document.getElementById("profileImageUploadUserId");
+let profileImageUploadToken = document.getElementById("profileImageUploadToken");
+let buttonProfileImageUpload = document.getElementById("buttonProfileImageUpload");
+
+let fileImageUploadFile = document.getElementById("fileImageUploadFile");
+let fileImageUploadTopicId = document.getElementById("fileImageUploadTopicId");
+let fileImageUploadToken = document.getElementById("fileImageUploadToken");
+let fileImageUpload = document.getElementById("fileImageUpload");
+
+let fileDownloadFileId = document.getElementById("fileDownloadFileId");
+let fileDownloadToken = document.getElementById("fileDownloadToken");
+let fileDownload = document.getElementById("fileDownload");
+let profileDownload = document.getElementById("profileDownload");
 
 let buttonMsgSend = document.getElementById("buttonMsgSend");
 let buttonMsgReceiveAck = document.getElementById("buttonMsgReceiveAck");
@@ -46,6 +62,169 @@ buttonSend.onclick = function () {
 
     Log("SEND " + inputJson.value)
     websocketConnection.send(inputJson.value)
+}
+
+profileDownload.onclick = function () {
+    if (!fileDownloadFileId.value) {
+        inputJson.value = "file_id 입력 안됨"
+        Log("file_id 입력 안됨")
+        return
+    }
+
+    if (!fileDownloadToken.value) {
+        inputJson.value = "token 입력 안됨"
+        Log("token 입력 안됨")
+        return
+    }
+
+    download("profile", fileDownloadFileId.value, fileDownloadToken.value)
+}
+
+fileDownload.onclick = function () {
+    if (!fileDownloadFileId.value) {
+        inputJson.value = "file_id 입력 안됨"
+        Log("file_id 입력 안됨")
+        return
+    }
+
+    if (!fileDownloadToken.value) {
+        inputJson.value = "token 입력 안됨"
+        Log("token 입력 안됨")
+        return
+    }
+
+    download("file", fileDownloadFileId.value, fileDownloadToken.value)
+}
+
+fileImageUpload.onclick = function () {
+    if (!fileImageUploadTopicId.value) {
+        inputJson.value = "topic_id 입력 안됨"
+        Log("topic_id 입력 안됨")
+        return
+    }
+
+    if (!fileImageUploadToken.value) {
+        inputJson.value = "token 입력 안됨"
+        Log("token 입력 안됨")
+        return
+    }
+
+    if (!fileImageUploadFile.files[0]) {
+        inputJson.value = "file 입력 안됨"
+        Log("file 입력 안됨")
+        return
+    }
+
+    upload("file", undefined, fileImageUploadTopicId.value, fileImageUploadToken.value, fileImageUploadFile.files[0])
+}
+
+buttonProfileImageUpload.onclick = function () {
+    if (!profileImageUploadUserId.value) {
+        inputJson.value = "user_id 입력 안됨"
+        Log("user_id 입력 안됨")
+        return
+    }
+
+    if (!profileImageUploadToken.value) {
+        inputJson.value = "token 입력 안됨"
+        Log("token 입력 안됨")
+        return
+    }
+
+    if (!profileImageUploadFile.files[0]) {
+        inputJson.value = "file 입력 안됨"
+        Log("file 입력 안됨")
+        return
+    }
+
+    upload("profile", profileImageUploadUserId.value, undefined, profileImageUploadToken.value, profileImageUploadFile.files[0])
+}
+
+function download(type, file_id, token) {
+    if (type === undefined) {
+        inputJson.value = "다운로드 타입 입력 안됨"
+    }
+
+    let url = "/api/v1/download"
+    if (type === "file") {
+        url = url + "/file" + "?file_id=" + file_id
+    } else if (type === "profile") {
+        url = url + "/profile" + "?file_id=" + file_id
+    }
+
+    $.ajax({
+        type: "GET",
+        url: url,
+        processData: false,
+        contentType: false,
+        cache: false,
+        timeout: 600000,
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader("Authorization", "Bearer " + token)
+        },
+        complete: function (e, xhr, settings) {
+            if (e.status === 200) {
+                Log(e.responseText)
+                AddResult(JSON.stringify(JSON.parse(e.responseText), null, 4))
+            } else {
+                Log(e.responseText)
+                AddResult(JSON.stringify(JSON.parse(e.responseText), null, 4))
+            }
+        }
+    });
+
+    return false
+}
+
+function upload(type, user_id, topic_id, token, file) {
+    if (type === undefined) {
+        inputJson.value = "업로드 타입 입력 안됨"
+    }
+
+    let url = "/api/v1/upload"
+    if (type === "file") {
+        url = url + "/file" + "?topic_id=" + topic_id
+    } else if (type === "profile") {
+        url = url + "/profile" + "?user_id=" + user_id
+    }
+
+    let formData = new FormData();
+    formData.append("file", file)
+
+    $.ajax({
+        type: "POST",
+        enctype: 'multipart/form-data',
+        url: url,
+        data: formData,
+        processData: false,
+        contentType: false,
+        cache: false,
+        timeout: 600000,
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader("Authorization", "Bearer " + token)
+        },
+        complete: function (e, xhr, settings) {
+            if (e.status === 200) {
+                Log(e.responseText)
+                AddResult(JSON.stringify(JSON.parse(e.responseText), null, 4))
+            } else {
+                Log(e.responseText)
+                AddResult(JSON.stringify(JSON.parse(e.responseText), null, 4))
+            }
+        }
+    });
+
+    return false
+}
+
+buttonMetaUserProfile.onclick = function () {
+    let root = defaultJsonObject("meta")
+    root.meta.request.what = "profile"
+    root.meta.request.how = "upload"
+    root.meta.request.profile = {}
+    root.meta.request.profile.description = "자기 소개"
+
+    inputJson.value = JSON.stringify(root, null, 4)
 }
 
 buttonMsgSend.onclick = function () {
@@ -299,6 +478,7 @@ function parseWebsocketReadMessage(msg) {
             recvAck.msg.request = {}
             recvAck.msg.request.what = "message"
             recvAck.msg.request.how = "ack"
+            recvAck.msg.request.topic = {}
             recvAck.msg.request.topic.id = recv.msg.request.topic.id
             recvAck.msg.request.sequence_id = recv.msg.response.message.sequence_id
             let recvAckJson = JSON.stringify(recvAck)
@@ -311,6 +491,7 @@ function parseWebsocketReadMessage(msg) {
             readAck.msg.request = {}
             readAck.msg.request.what = "message"
             readAck.msg.request.how = "read"
+            readAck.msg.request.topic = {}
             readAck.msg.request.topic.id = recv.msg.request.topic.id
             readAck.msg.request.sequence_id = recv.msg.response.message.sequence_id
             let readAckJson = JSON.stringify(readAck)
