@@ -27,6 +27,16 @@ let buttonMetaAllUser = document.getElementById("buttonMetaAllUser");
 let buttonMetaChatRoomUser = document.getElementById("buttonMetaChatRoomUser");
 let buttonMetaChatRoomMessage = document.getElementById("buttonMetaChatRoomMessage");
 let buttonMetaUserProfile = document.getElementById("buttonMetaUserProfile");
+let buttonMetaNotifySelect = document.getElementById("buttonMetaNotifySelect");
+
+let buttonNotifyMention = document.getElementById("buttonNotifyMention");
+let buttonNotifyMentionReceive = document.getElementById("buttonNotifyMentionReceive");
+let buttonNotifyMentionRead = document.getElementById("buttonNotifyMentionRead");
+let buttonNotifyMentionDelete = document.getElementById("buttonNotifyMentionDelete");
+let buttonNotifyReply = document.getElementById("buttonNotifyReply");
+let buttonNotifyReplyReceive = document.getElementById("buttonNotifyReplyReceive");
+let buttonNotifyReplyRead = document.getElementById("buttonNotifyReplyRead");
+let buttonNotifyReplyDelete = document.getElementById("buttonNotifyReplyDelete");
 
 let profileImageUploadFile = document.getElementById("profileImageUploadFile");
 let profileImageUploadUserId = document.getElementById("profileImageUploadUserId");
@@ -165,10 +175,10 @@ function download(type, file_id, token) {
         complete: function (e, xhr, settings) {
             if (e.status === 200) {
                 Log(e.responseText)
-                AddResult(JSON.stringify(JSON.parse(e.responseText), null, 4))
+                // AddResult(JSON.stringify(JSON.parse(e.responseText), null, 4))
             } else {
                 Log(e.responseText)
-                AddResult(JSON.stringify(JSON.parse(e.responseText), null, 4))
+                // AddResult(JSON.stringify(JSON.parse(e.responseText), null, 4))
             }
         }
     });
@@ -215,6 +225,107 @@ function upload(type, user_id, topic_id, token, file) {
     });
 
     return false
+}
+
+buttonMetaNotifySelect.onclick = function () {
+    let root = defaultJsonObject("meta")
+    root.meta.request.what = "notify"
+    root.meta.request.how = "select"
+    root.meta.request.using = "me"
+
+    inputJson.value = JSON.stringify(root, null, 4)
+}
+
+buttonNotifyReply.onclick = function () {
+    let root = defaultJsonObject("notify")
+    root.notify.request.what = "reply"
+    root.notify.request.how = "create"
+    root.notify.request.topic = {}
+    root.notify.request.topic.id = 1
+    root.notify.request.user = {}
+    root.notify.request.user.id = 1
+    root.notify.request.sequence_id = 1
+
+    inputJson.value = JSON.stringify(root, null, 4)
+}
+
+buttonNotifyReplyReceive.onclick = function () {
+    let root = defaultJsonObject("notify")
+    root.notify.request.what = "reply"
+    root.notify.request.how = "ack"
+    root.notify.request.notify = {}
+    root.notify.request.notify.id = 1
+
+    inputJson.value = JSON.stringify(root, null, 4)
+}
+
+buttonNotifyReplyRead.onclick = function () {
+    let root = defaultJsonObject("notify")
+    root.notify.request.what = "reply"
+    root.notify.request.how = "read"
+    root.notify.request.notify = {}
+    root.notify.request.notify.id = 1
+
+    inputJson.value = JSON.stringify(root, null, 4)
+}
+
+buttonNotifyReplyDelete.onclick = function () {
+    let root = defaultJsonObject("notify")
+    root.notify.request.what = "reply"
+    root.notify.request.how = "delete"
+    root.notify.request.notify = {}
+    root.notify.request.notify.id = 1
+
+    inputJson.value = JSON.stringify(root, null, 4)
+}
+
+buttonNotifyMention.onclick = function () {
+    let root = defaultJsonObject("notify")
+    root.notify.request.what = "mention"
+    root.notify.request.how = "create"
+    root.notify.request.topic = {}
+    root.notify.request.topic.id = 1
+    root.notify.request.users = [
+        {
+            "id": 1
+        },
+        {
+            "id": 2
+        },
+    ]
+    root.notify.request.sequence_id = 1
+
+    inputJson.value = JSON.stringify(root, null, 4)
+}
+
+buttonNotifyMentionDelete.onclick = function () {
+    let root = defaultJsonObject("notify")
+    root.notify.request.what = "mention"
+    root.notify.request.how = "delete"
+    root.notify.request.notify = {}
+    root.notify.request.notify.id = 1
+
+    inputJson.value = JSON.stringify(root, null, 4)
+}
+
+buttonNotifyMentionReceive.onclick = function () {
+    let root = defaultJsonObject("notify")
+    root.notify.request.what = "mention"
+    root.notify.request.how = "ack"
+    root.notify.request.notify = {}
+    root.notify.request.notify.id = 1
+
+    inputJson.value = JSON.stringify(root, null, 4)
+}
+
+buttonNotifyMentionRead.onclick = function () {
+    let root = defaultJsonObject("notify")
+    root.notify.request.what = "mention"
+    root.notify.request.how = "read"
+    root.notify.request.notify = {}
+    root.notify.request.notify.id = 1
+
+    inputJson.value = JSON.stringify(root, null, 4)
 }
 
 buttonMetaUserProfile.onclick = function () {
@@ -506,6 +617,8 @@ function parseWebsocketReadMessage(msg) {
             AddResult(JSON.stringify(recv, null, 4))
             // receiveJson.value = receiveJson.value + JSON.stringify(recv, null, 4)
         }
+    } else if (recv.notify !== undefined) {
+        AddResult(JSON.stringify(recv, null, 4))
     } else {
         Log("json root object가 없음 ctrl, msg, auth, meta")
         AddResult(JSON.stringify(recv, null, 4))
@@ -578,6 +691,11 @@ function defaultJsonObject(type) {
             root.file = {}
             root.file.uuid = uuidv4()
             root.file.request = {}
+            return root
+        case "notify":
+            root.notify = {}
+            root.notify.uuid = uuidv4()
+            root.notify.request = {}
             return root
         default:
             root.null = {}

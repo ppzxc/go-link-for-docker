@@ -54,6 +54,9 @@
       },
       "hub": {
         "count": 100
+      },
+      "notify": {
+        "count": 100
       }
     },
     "jwt": {
