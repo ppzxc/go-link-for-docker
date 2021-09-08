@@ -53,6 +53,7 @@ let fileDownloadToken = document.getElementById("fileDownloadToken");
 let fileDownload = document.getElementById("fileDownload");
 let profileDownload = document.getElementById("profileDownload");
 
+let buttonMsgSendFile = document.getElementById("buttonMsgSendFile");
 let buttonMsgSend = document.getElementById("buttonMsgSend");
 let buttonMsgReceiveAck = document.getElementById("buttonMsgReceiveAck");
 let buttonMsgReadAck = document.getElementById("buttonMsgReadAck");
@@ -217,6 +218,19 @@ function upload(type, user_id, topic_id, token, file) {
             if (e.status === 200) {
                 Log(e.responseText)
                 AddResult(JSON.stringify(JSON.parse(e.responseText), null, 4))
+
+                if (topic_id !== undefined) {
+                    let msg = JSON.parse(e.responseText)
+                    let root = defaultJsonObject("msg")
+                    root.msg.request.what = "message"
+                    root.msg.request.how = "send"
+                    root.msg.request.using = "file"
+                    root.msg.request.topic = {}
+                    root.msg.request.topic.id = parseInt(topic_id)
+                    root.msg.request.file_id = msg.file.response.file.id
+                    // console.log(JSON.stringify(root));
+                    websocketConnection.send(JSON.stringify(root))
+                }
             } else {
                 Log(e.responseText)
                 AddResult(JSON.stringify(JSON.parse(e.responseText), null, 4))
@@ -334,6 +348,18 @@ buttonMetaUserProfile.onclick = function () {
     root.meta.request.how = "upload"
     root.meta.request.profile = {}
     root.meta.request.profile.description = "자기 소개"
+
+    inputJson.value = JSON.stringify(root, null, 4)
+}
+
+buttonMsgSendFile.onclick = function () {
+    let root = defaultJsonObject("msg")
+    root.msg.request.what = "message"
+    root.msg.request.how = "send"
+    root.msg.request.using = "file"
+    root.msg.request.topic = {}
+    root.msg.request.topic.id = 0
+    root.msg.request.file_id = 0
 
     inputJson.value = JSON.stringify(root, null, 4)
 }
@@ -583,31 +609,33 @@ function parseWebsocketReadMessage(msg) {
         AddResult(JSON.stringify(recv, null, 4))
         // receiveJson.value = receiveJson.value + JSON.stringify(recv, null, 4)
         if (recv.result.status_code === 200) {
-            let recvAck = {}
-            recvAck.msg = {}
-            recvAck.msg.uuid = uuidv4()
-            recvAck.msg.request = {}
-            recvAck.msg.request.what = "message"
-            recvAck.msg.request.how = "ack"
-            recvAck.msg.request.topic = {}
-            recvAck.msg.request.topic.id = recv.msg.request.topic.id
-            recvAck.msg.request.sequence_id = recv.msg.response.message.sequence_id
-            let recvAckJson = JSON.stringify(recvAck)
-            Log("SEND " + recvAckJson)
-            websocketConnection.send(recvAckJson)
+            if (recv.msg.request.how !== "ack" && recv.msg.request.how !== "read") {
+                let recvAck = {}
+                recvAck.msg = {}
+                recvAck.msg.uuid = uuidv4()
+                recvAck.msg.request = {}
+                recvAck.msg.request.what = "message"
+                recvAck.msg.request.how = "ack"
+                recvAck.msg.request.topic = {}
+                recvAck.msg.request.topic.id = recv.msg.request.topic.id
+                recvAck.msg.request.sequence_id = recv.msg.response.message.sequence_id
+                let recvAckJson = JSON.stringify(recvAck)
+                Log("SEND " + recvAckJson)
+                websocketConnection.send(recvAckJson)
 
-            let readAck = {}
-            readAck.msg = {}
-            readAck.msg.uuid = uuidv4()
-            readAck.msg.request = {}
-            readAck.msg.request.what = "message"
-            readAck.msg.request.how = "read"
-            readAck.msg.request.topic = {}
-            readAck.msg.request.topic.id = recv.msg.request.topic.id
-            readAck.msg.request.sequence_id = recv.msg.response.message.sequence_id
-            let readAckJson = JSON.stringify(readAck)
-            Log("SEND " + readAckJson)
-            websocketConnection.send(readAckJson)
+                let readAck = {}
+                readAck.msg = {}
+                readAck.msg.uuid = uuidv4()
+                readAck.msg.request = {}
+                readAck.msg.request.what = "message"
+                readAck.msg.request.how = "read"
+                readAck.msg.request.topic = {}
+                readAck.msg.request.topic.id = recv.msg.request.topic.id
+                readAck.msg.request.sequence_id = recv.msg.response.message.sequence_id
+                let readAckJson = JSON.stringify(readAck)
+                Log("SEND " + readAckJson)
+                websocketConnection.send(readAckJson)
+            }
         }
     } else if (recv.meta !== undefined) {
         AddResult(JSON.stringify(recv, null, 4))
