@@ -19,9 +19,9 @@
     "use_prom": true
   },
   "app": {
-    "upload_file_path": "D:/03_project/10_go/go-link/uploads",
+    "upload_file_path": "/app/uploads",
     "web": {
-      "port": "0.0.0.0:8081",
+      "port": "0.0.0.0:8283",
       "monitor": 10
     },
     "pprof": {

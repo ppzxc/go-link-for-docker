@@ -2,15 +2,15 @@ version: "3.8"
 
 services:
   link:
-    image: ppzxc8487/go-link:v0.0.11
+    image: ppzxc8487/go-link:v0.0.24
     restart: always
     container_name: link
     volumes:
-      - ./go-link/config.json:/app/config.json
-      - ./go-link/static:/app/static
-      - ./go-link/uploads:/app/uploads
+      - ./config.json:/app/config.json
+      - ./static:/app/static
+      - ./uploads:/app/uploads
     ports:
-      - 8081:8081
+      - 8283:8283
     networks:
       - link
       
@@ -33,7 +33,7 @@ services:
     image: mongo-express
     restart: always
     ports:
-      - 8082:8082
+      - 8284:8081
     environment:
       - ME_CONFIG_MONGODB_SERVER=mongo-db
       - ME_CONFIG_MONGODB_PORT=27017

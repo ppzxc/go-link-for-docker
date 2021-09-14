@@ -156,7 +156,7 @@ function download(type, file_id, token) {
         inputJson.value = "다운로드 타입 입력 안됨"
     }
 
-    let url = "/api/v1/download"
+    let url = "/download"
     if (type === "file") {
         url = url + "/file" + "?file_id=" + file_id
     } else if (type === "profile") {
@@ -192,7 +192,7 @@ function upload(type, user_id, topic_id, token, file) {
         inputJson.value = "업로드 타입 입력 안됨"
     }
 
-    let url = "/api/v1/upload"
+    let url = "/upload"
     if (type === "file") {
         url = url + "/file" + "?topic_id=" + topic_id
     } else if (type === "profile") {
@@ -496,8 +496,56 @@ buttonRegister.onclick = function () {
     root.auth.request.user.auth.name = ""
     root.auth.request.user.auth.email = ""
     root.auth.request.user.auth.password = ""
+    root.auth.request.user.device_info = {}
+    root.auth.request.user.device_info = device_info_create()
 
     inputJson.value = JSON.stringify(root, null, 4)
+}
+
+function device_info_create() {
+    let device_info = {}
+    device_info.browser_id = browser_id()
+    device_info.user_agent = navJS.userAgent()
+
+    if (navJS.isMobile()) {
+        device_info.device_id = browser_id()
+        device_info.platform = "mobile"
+    } else {
+        device_info.device_id = "-1"
+        device_info.platform = "desktop"
+    }
+
+    if (navJS.isIOS()) {
+        device_info.operation_system = "ios"
+    } else if (navJS.isMac()) {
+        device_info.operation_system = "mac"
+    } else if (navJS.isWindows()) {
+        device_info.operation_system = "windows"
+    } else if (navJS.isUnix()) {
+        device_info.operation_system = "unix"
+    } else if (navJS.isLinux()) {
+        device_info.operation_system = "linux"
+    } else if (navJS.isAndroid()) {
+        device_info.operation_system = "android"
+    } else if (navJS.isBlackBerry()) {
+        device_info.operation_system = "blackberry"
+    } else {
+        device_info.operation_system = "etc"
+    }
+
+    return device_info
+}
+
+function browser_id() {
+    let navigator_info = window.navigator;
+    let screen_info = window.screen;
+    let uid = navigator_info.mimeTypes.length;
+    uid += navigator_info.userAgent.replace(/\D+/g, '');
+    uid += navigator_info.plugins.length;
+    uid += screen_info.height || '';
+    uid += screen_info.width || '';
+    uid += screen_info.pixelDepth || '';
+    return uid
 }
 
 buttonTestLogin.onclick = function () {
@@ -509,6 +557,8 @@ buttonTestLogin.onclick = function () {
     root.auth.request.user.auth = {}
     root.auth.request.user.auth.email = "asdf@asdf"
     root.auth.request.user.auth.password = "asdfasdf"
+    root.auth.request.user.device_info = {}
+    root.auth.request.user.device_info = device_info_create()
 
     inputJson.value = JSON.stringify(root, null, 4)
 }
@@ -522,6 +572,8 @@ buttonIdPassword.onclick = function () {
     root.auth.request.user.auth = {}
     root.auth.request.user.auth.email = ""
     root.auth.request.user.auth.password = ""
+    root.auth.request.user.device_info = {}
+    root.auth.request.user.device_info = device_info_create()
 
     inputJson.value = JSON.stringify(root, null, 4)
 }
@@ -531,6 +583,9 @@ buttonAnonymous.onclick = function () {
     root.auth.request.what = "session"
     root.auth.request.how = "login"
     root.auth.request.using = "anonymous"
+    root.auth.request.user = {}
+    root.auth.request.user.device_info = {}
+    root.auth.request.user.device_info = device_info_create()
 
     inputJson.value = JSON.stringify(root, null, 4)
 }
@@ -542,6 +597,8 @@ buttonRotary.onclick = function () {
     root.auth.request.using = "rotary"
     root.auth.request.user = {}
     root.auth.request.user.id = 0
+    root.auth.request.user.device_info = {}
+    root.auth.request.user.device_info = device_info_create()
 
     inputJson.value = JSON.stringify(root, null, 4)
 }
@@ -560,6 +617,9 @@ buttonToken.onclick = function () {
     root.auth.request.how = "login"
     root.auth.request.using = "token"
     root.auth.request.token = ""
+    root.auth.request.user = {}
+    root.auth.request.user.device_info = {}
+    root.auth.request.user.device_info = device_info_create()
 
     inputJson.value = JSON.stringify(root, null, 4)
 }
@@ -655,7 +715,7 @@ function parseWebsocketReadMessage(msg) {
 }
 
 if (window["WebSocket"]) {
-    websocketConnection = new WebSocket("ws://" + document.location.host + "/api/v1/ws");
+    websocketConnection = new WebSocket("ws://" + document.location.host + "/ws");
 
     websocketConnection.onclose = function (evt) {
         connection_status.innerText = "CONNECTION STATUS : CLOSE"
